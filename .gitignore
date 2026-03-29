@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+auth_info_baileys/
+package-lock.json
+
+# Environment variables
+.env
+
+# Google Credentials
+credentials.json
+token.json
+client_secret.json
+
+# WhatsApp Session
+auth_info_baileys/
+
+# Logs
+*.log
+logs/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+tmp/
+temp/
+coverage/
+dist/
