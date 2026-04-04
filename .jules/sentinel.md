@@ -1,0 +1,4 @@
+## 2026-04-04 - [Missing Authorization in Read Handlers]
+**Vulnerability:** Anyone who texted the bot could use the 'laporan' and 'rekap' commands to view the owner's sensitive personal financial reports, because the default role 'Viewer' was not checked in those specific command handlers.
+**Learning:** Default-allow authorization models (where handlers execute unless explicitly denied) are dangerous for security. In this architecture, all incoming messages trigger command handlers, so every handler that accesses sensitive data must explicitly check the 'Owner' role.
+**Prevention:** Implement explicit role checks (`if (context.userRole !== 'Owner')`) in every command handler that queries or manipulates sensitive data, and never rely on obscurity (hiding commands from the help menu) as a security mechanism.

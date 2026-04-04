@@ -19,6 +19,13 @@ export class LaporanHandler implements CommandHandler {
 
     async handle(context: MessageContext): Promise<boolean> {
         try {
+            if (context.userRole !== 'Owner') {
+                await context.sock.sendMessage(context.from, {
+                    text: '⛔ Hanya owner yang bisa melihat laporan.'
+                });
+                return true;
+            }
+
             const text = context.text.toLowerCase().trim();
             const rest = text.replaceAll(/^laporan\s*/g, '').trim();
 
