@@ -62,7 +62,8 @@ export class LaporanHandler implements CommandHandler {
 
 function buildMonthlyMessage(r: MonthlyReport): string {
     const header = `📊 *LAPORAN ${getNamaBulan(r.bulan).toUpperCase()} ${r.tahun}*\n`;
-    const summary = `\n💰 Pemasukan: ${formatRupiah(r.pemasukan)}\n💸 Pengeluaran: ${formatRupiah(r.pengeluaran)}\n📈 Saldo: ${formatRupiah(r.saldo)}\n`;
+    const saldoEmoji = r.saldo >= 0 ? '📈' : '📉';
+    const summary = `\n💰 Pemasukan: ${formatRupiah(r.pemasukan)}\n💸 Pengeluaran: ${formatRupiah(r.pengeluaran)}\n${saldoEmoji} Saldo: ${formatRupiah(r.saldo)}\n`;
 
     let details = '';
 
@@ -111,7 +112,8 @@ function buildYearlyMessage(r: YearlyReport): string {
     let text = `📊 *LAPORAN TAHUNAN ${r.tahun}*\n\n`;
     text += `💰 Total Pemasukan: ${formatRupiah(r.totalPemasukan)}\n`;
     text += `💸 Total Pengeluaran: ${formatRupiah(r.totalPengeluaran)}\n`;
-    text += `📈 Saldo Bersih: ${formatRupiah(r.totalSaldo)}\n`;
+    const saldoEmoji = r.totalSaldo >= 0 ? '📈' : '📉';
+    text += `${saldoEmoji} Saldo Bersih: ${formatRupiah(r.totalSaldo)}\n`;
     text += `\n📅 *Breakdown per bulan:*\n`;
 
     for (const month of r.months) {
