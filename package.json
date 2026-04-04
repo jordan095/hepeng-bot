@@ -20,20 +20,21 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@hapi/boom": "^10.0.1",
-    "@whiskeysockets/baileys": "^6.5.0",
-    "dotenv": "^16.3.1",
-    "googleapis": "^128.0.0",
-    "pino": "^8.16.0",
-    "qrcode-terminal": "^0.12.0"
+    "@hapi/boom": "10.0.1",
+    "@whiskeysockets/baileys": "6.7.21",
+    "dotenv": "16.4.5",
+    "googleapis": "140.0.1",
+    "pino": "9.0.0",
+    "qrcode-terminal": "0.12.0"
   },
   "devDependencies": {
-    "@types/node": "^25.0.3",
-    "@types/pino": "^7.0.5",
-    "@types/qrcode-terminal": "^0.12.2",
-    "@vitest/coverage-v8": "^2.1.9",
-    "tsx": "^4.21.0",
-    "typescript": "^5.9.3",
-    "vitest": "^2.1.9"
+    "@types/node": "20.12.7",
+    "@types/pino": "7.0.5",
+    "@types/qrcode-terminal": "0.12.2",
+    "@vitest/coverage-v8": "2.1.9",
+    "tsx": "4.19.1",
+    "typescript": "5.6.3",
+    "vite": "5.4.10",
+    "vitest": "2.1.9"
   }
 }

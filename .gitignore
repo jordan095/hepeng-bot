@@ -1,7 +1,6 @@
 # Dependencies
 node_modules/
 auth_info_baileys/
-package-lock.json
 
 # Environment variables
 .env
