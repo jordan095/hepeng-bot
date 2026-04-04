@@ -21,10 +21,18 @@ export function parseExpense(rawText: string): ParsedTransaction | null {
         triggerIdx = 0;
         triggerLen = 1;
     } else {
+        const pIdx = lower.indexOf('pengeluaran');
         const kIdx = lower.indexOf('keluar');
-        if (kIdx === -1) return null;
-        triggerIdx = kIdx;
-        triggerLen = 6;
+
+        if (pIdx !== -1) {
+            triggerIdx = pIdx;
+            triggerLen = 11;
+        } else if (kIdx !== -1) {
+            triggerIdx = kIdx;
+            triggerLen = 6;
+        } else {
+            return null;
+        }
     }
 
     // Everything before trigger is optional date prefix

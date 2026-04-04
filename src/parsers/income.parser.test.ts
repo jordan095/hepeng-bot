@@ -17,6 +17,12 @@ describe('parseIncome', () => {
         expect(result!.jumlah).toBe(20_000_000);
     });
 
+    it('parses pemasukan format', () => {
+        const result = parseIncome('pemasukan 20jt Main Job Monthly Salary');
+        expect(result).not.toBeNull();
+        expect(result!.jumlah).toBe(20_000_000);
+    });
+
     it('parses with bca metode', () => {
         const result = parseIncome('+ 20jt Main Job Monthly Salary bca');
         expect(result).not.toBeNull();

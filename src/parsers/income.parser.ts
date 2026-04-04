@@ -19,10 +19,18 @@ export function parseIncome(rawText: string): ParsedTransaction | null {
         triggerIdx = 0;
         triggerLen = 1;
     } else {
+        const pIdx = lower.indexOf('pemasukan');
         const mIdx = lower.indexOf('masuk');
-        if (mIdx === -1) return null;
-        triggerIdx = mIdx;
-        triggerLen = 5;
+
+        if (pIdx !== -1) {
+            triggerIdx = pIdx;
+            triggerLen = 9;
+        } else if (mIdx !== -1) {
+            triggerIdx = mIdx;
+            triggerLen = 5;
+        } else {
+            return null;
+        }
     }
 
     const prefix = text.slice(0, triggerIdx).trim();
