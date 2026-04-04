@@ -87,9 +87,7 @@ function groupAndFormatDetails(details: TransactionDetail[]): string {
     const groups: Record<string, { total: number; items: { subKategori: string; item: string; jumlah: number }[] }> = {};
 
     for (const d of details) {
-        if (!groups[d.kategori]) {
-            groups[d.kategori] = { total: 0, items: [] };
-        }
+        groups[d.kategori] ??= { total: 0, items: [] };
         const g = groups[d.kategori];
         if (g) {
             g.total += d.jumlah;
