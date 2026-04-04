@@ -12,6 +12,13 @@ export class RekapHandler implements CommandHandler {
 
     async handle(context: MessageContext): Promise<boolean> {
         try {
+            if (context.userRole !== 'Owner') {
+                await context.sock.sendMessage(context.from, {
+                    text: '⛔ Hanya owner yang bisa melihat rekap.'
+                });
+                return true;
+            }
+
             const jkt = getJakartaTime();
             const report = await getMonthlyReport(jkt.bulan, jkt.tahun);
 
