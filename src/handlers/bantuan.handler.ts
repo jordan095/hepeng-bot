@@ -45,18 +45,16 @@ export class BantuanHandler implements CommandHandler {
 
             text += `🗑️ *BATALKAN ENTRI TERAKHIR:*\n`;
             text += `• \`batal\` atau \`undo\`\n\n`;
-        }
 
-        text += `📊 *LAPORAN:*\n`;
-        text += `• \`laporan\` → laporan bulan ini\n`;
-        text += `• \`laporan mar\` → laporan Maret\n`;
-        text += `• \`laporan mar 2025\` → laporan Maret 2025\n`;
-        text += `• \`laporan 2025\` → laporan tahunan\n\n`;
+            text += `📊 *LAPORAN:*\n`;
+            text += `• \`laporan\` → laporan bulan ini\n`;
+            text += `• \`laporan mar\` → laporan Maret\n`;
+            text += `• \`laporan mar 2025\` → laporan Maret 2025\n`;
+            text += `• \`laporan 2025\` → laporan tahunan\n\n`;
 
-        text += `⚡ *REKAP CEPAT:*\n`;
-        text += `• \`rekap\` → ringkasan bulan ini\n\n`;
+            text += `⚡ *REKAP CEPAT:*\n`;
+            text += `• \`rekap\` → ringkasan bulan ini\n\n`;
 
-        if (role === 'Owner') {
             text += `💳 *METODE PEMBAYARAN (opsional di akhir):*\n`;
             text += `cash | bca | mandiri | jago | cc visa bca | transfer\n\n`;
 

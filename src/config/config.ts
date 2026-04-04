@@ -6,7 +6,7 @@ export interface Config {
 }
 
 export const CONFIG: Config = {
-    SHEET_ID: process.env.GOOGLE_SHEET_ID || '1qic764IauJSbNEgBhhLxT9qE-_6noBIjmNwWou-I044',
+    SHEET_ID: process.env.GOOGLE_SHEET_ID || '',
     OWNER_NUMBERS: process.env.OWNER_NUMBERS
         ? process.env.OWNER_NUMBERS.split(',').map(n => n.trim())
         : [],
