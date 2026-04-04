@@ -1,0 +1,3 @@
+## 2024-05-15 - Optimize transaction reporting performance by skipping irrelevant rows
+**Learning:** Found a performance bottleneck in `getMonthlyReport` and `getYearlyReport` where expensive string parsing and object creation was done for every row, even if the row did not fall within the requested time period. Also noticed array instantiation and `.indexOf()` lookups inside the `parseBulanFromText` helper.
+**Action:** Always consider early returns and skip logic to avoid expensive operations on large datasets. Replace inline array declarations and linear lookups with static object literal maps for O(1) lookups whenever static mappings are used.

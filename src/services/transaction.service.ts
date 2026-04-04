@@ -129,8 +129,11 @@ export async function getYearlyReport(tahun: number): Promise<YearlyReport> {
             const row = rows[i];
             if (!row) continue;
 
+            // Bolt: Add early return to skip expensive parsing for irrelevant years
+            const rowTahun = Number.parseInt(row[6] || '0', 10);
+            if (rowTahun !== tahun) continue;
+
             const entry = parseRow(row);
-            if (entry.tahun !== tahun) continue;
 
             const month = monthData[entry.bulan];
             if (!month) continue;
@@ -201,14 +204,14 @@ function parseRow(row: (string | undefined)[]): TransactionEntry {
     };
 }
 
+// Bolt: Static map for faster O(1) month lookups instead of array initialization + indexOf
+const BULAN_MAP: Record<string, number> = {
+    'januari': 1, 'februari': 2, 'maret': 3, 'april': 4, 'mei': 5, 'juni': 6,
+    'juli': 7, 'agustus': 8, 'september': 9, 'oktober': 10, 'november': 11, 'desember': 12
+};
+
 function parseBulanFromText(text: string): number {
-    const BULAN_NAMES = [
-        'januari', 'februari', 'maret', 'april', 'mei', 'juni',
-        'juli', 'agustus', 'september', 'oktober', 'november', 'desember'
-    ];
-    const lower = text.toLowerCase();
-    const idx = BULAN_NAMES.indexOf(lower);
-    return idx >= 0 ? idx + 1 : 0;
+    return BULAN_MAP[text.toLowerCase()] || 0;
 }
 
 function processRowsForReport(rows: any[][], bulan: number, tahun: number) {
@@ -221,8 +224,13 @@ function processRowsForReport(rows: any[][], bulan: number, tahun: number) {
         const row = rows[i];
         if (!row) continue;
 
+        // Bolt: Add early returns to skip expensive parsing for irrelevant rows
+        const rowTahun = Number.parseInt(row[6] || '0', 10);
+        if (rowTahun !== tahun) continue;
+        const rowBulan = parseBulanFromText(row[5] || '');
+        if (rowBulan !== bulan) continue;
+
         const entry = parseRow(row);
-        if (entry.bulan !== bulan || entry.tahun !== tahun) continue;
 
         const detail: TransactionDetail = {
             kategori: entry.kategori,
