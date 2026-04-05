@@ -57,6 +57,8 @@ function normalizeDecimalFormat(s: string): string {
  * Parses optional date prefix before the main command keyword.
  * Supports: "12 jan", "29 mar 2025"
  */
+const BULAN_MAP_KEYS = Object.keys(BULAN_MAP);
+
 export function parseDateFromText(text: string): { tanggal: number; bulan: number; tahun: number } {
     const jkt = getJakartaTime();
     const result = { tanggal: jkt.tanggal, bulan: jkt.bulan, tahun: jkt.tahun };
@@ -65,7 +67,7 @@ export function parseDateFromText(text: string): { tanggal: number; bulan: numbe
     if (yearMatch?.[1]) result.tahun = Number.parseInt(yearMatch[1], 10);
 
     const lowerText = text.toLowerCase();
-    const mName = Object.keys(BULAN_MAP).find(name => lowerText.includes(name));
+    const mName = BULAN_MAP_KEYS.find(name => lowerText.includes(name));
     if (mName) result.bulan = BULAN_MAP[mName] ?? result.bulan;
 
     const dayMatch = /\b(\d{1,2})\b/.exec(text);
