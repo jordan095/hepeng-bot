@@ -9,7 +9,7 @@ import { setLastEntry } from './undo.handler.js';
 export class IncomeHandler implements CommandHandler {
     canHandle(text: string): boolean {
         const lower = text.toLowerCase().trim();
-        return lower.startsWith('+') || lower.includes('masuk');
+        return lower.startsWith('+') || lower.includes('masuk') || lower.includes('pemasukan');
     }
 
     async handle(context: MessageContext): Promise<boolean> {
@@ -85,6 +85,7 @@ export class IncomeHandler implements CommandHandler {
 • \`+ 20jt Main Job Monthly Salary bca\`
 • \`+ 500rb Main Job THR\`
 • \`masuk 20jt Main Job Monthly Salary bca\`
+• \`pemasukan 20jt Main Job Monthly Salary bca\`
 • \`31 jan masuk 20.450.000 Main Job Monthly Salary bca\``;
     }
 }

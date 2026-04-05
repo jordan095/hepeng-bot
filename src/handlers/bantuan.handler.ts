@@ -34,6 +34,7 @@ export class BantuanHandler implements CommandHandler {
             text += `• \`- 50rb Makanan Luar The Grace\`\n`;
             text += `• \`- 1.5jt Perlengkapan Fashion Baju jago\`\n`;
             text += `• \`keluar 880rb Medical Rawat Jalan Dokter mandiri\`\n`;
+            text += `• \`pengeluaran 880rb Medical Rawat Jalan Dokter mandiri\`\n`;
             text += `• \`29 mar keluar 400rb Transportasi Ojol Maxim bca\`\n\n`;
 
             text += `💰 *CATAT PEMASUKAN:*\n`;
@@ -41,7 +42,8 @@ export class BantuanHandler implements CommandHandler {
             text += `Contoh:\n`;
             text += `• \`+ 20jt Main Job Monthly Salary bca\`\n`;
             text += `• \`+ 500rb Main Job THR\`\n`;
-            text += `• \`masuk 20.450.000 Main Job Monthly Salary bca\`\n\n`;
+            text += `• \`masuk 20.450.000 Main Job Monthly Salary bca\`\n`;
+            text += `• \`pemasukan 20.450.000 Main Job Monthly Salary bca\`\n\n`;
 
             text += `🗑️ *BATALKAN ENTRI TERAKHIR:*\n`;
             text += `• \`batal\` atau \`undo\`\n\n`;

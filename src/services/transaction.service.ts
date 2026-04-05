@@ -214,6 +214,16 @@ function parseBulanFromText(text: string): number {
     return BULAN_MAP[text.toLowerCase()] || 0;
 }
 
+/**
+ * Checks if a row matches the specified month and year.
+ */
+function isRowMatch(row: any[] | undefined, bulan: number, tahun: number): row is any[] {
+    if (!row) return false;
+    const rowTahun = Number.parseInt(row[6] || '0', 10);
+    const rowBulan = parseBulanFromText(row[5] || '');
+    return rowTahun === tahun && rowBulan === bulan;
+}
+
 function processRowsForReport(rows: any[][], bulan: number, tahun: number) {
     let pemasukan = 0;
     let pengeluaran = 0;
@@ -222,30 +232,20 @@ function processRowsForReport(rows: any[][], bulan: number, tahun: number) {
 
     for (let i = 1; i < rows.length; i++) {
         const row = rows[i];
-        if (!row) continue;
-
-        // Bolt: Add early returns to skip expensive parsing for irrelevant rows
-        const rowTahun = Number.parseInt(row[6] || '0', 10);
-        if (rowTahun !== tahun) continue;
-        const rowBulan = parseBulanFromText(row[5] || '');
-        if (rowBulan !== bulan) continue;
+        if (!isRowMatch(row, bulan, tahun)) continue;
 
         const entry = parseRow(row);
+        const { type, jumlah, kategori, subKategori, item, metode } = entry;
+        if (jumlah <= 0) continue;
 
-        const detail: TransactionDetail = {
-            kategori: entry.kategori,
-            subKategori: entry.subKategori,
-            item: entry.item,
-            jumlah: entry.jumlah,
-            metode: entry.metode
-        };
+        const detail: TransactionDetail = { kategori, subKategori, item, jumlah, metode };
 
-        if (entry.type === 'Pemasukan') {
-            pemasukan += entry.jumlah;
-            if (entry.jumlah > 0) pemasukanDetails.push(detail);
+        if (type === 'Pemasukan') {
+            pemasukan += jumlah;
+            pemasukanDetails.push(detail);
         } else {
-            pengeluaran += entry.jumlah;
-            if (entry.jumlah > 0) pengeluaranDetails.push(detail);
+            pengeluaran += jumlah;
+            pengeluaranDetails.push(detail);
         }
     }
 
