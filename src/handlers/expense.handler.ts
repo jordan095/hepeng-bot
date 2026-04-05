@@ -9,7 +9,7 @@ import { setLastEntry } from './undo.handler.js';
 export class ExpenseHandler implements CommandHandler {
     canHandle(text: string): boolean {
         const lower = text.toLowerCase().trim();
-        return lower.startsWith('-') || lower.includes('keluar');
+        return lower.startsWith('-') || lower.includes('keluar') || lower.includes('pengeluaran');
     }
 
     async handle(context: MessageContext): Promise<boolean> {
@@ -85,6 +85,7 @@ export class ExpenseHandler implements CommandHandler {
 • \`- 50rb Makanan Luar The Grace\`
 • \`- 1.5jt Perlengkapan Fashion Baju Lebaran jago\`
 • \`keluar 400rb Transportasi Ojol Transport CC bca\`
+• \`pengeluaran 400rb Transportasi Ojol Transport CC bca\`
 • \`29 mar keluar 880rb Medical Rawat Jalan Dokter mandiri\``;
     }
 }

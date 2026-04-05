@@ -20,6 +20,14 @@ describe('parseExpense', () => {
         expect(result!.subKategori).toBe('Ojol');
     });
 
+    it('parses pengeluaran format', () => {
+        const result = parseExpense('pengeluaran 400rb Transportasi Ojol Transport CC');
+        expect(result).not.toBeNull();
+        expect(result!.jumlah).toBe(400_000);
+        expect(result!.kategori).toBe('Transportasi');
+        expect(result!.subKategori).toBe('Ojol');
+    });
+
     it('parses juta amount', () => {
         const result = parseExpense('- 1.5jt Perlengkapan Fashion Baju Lebaran');
         expect(result).not.toBeNull();
