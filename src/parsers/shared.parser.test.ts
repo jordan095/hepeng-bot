@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { parseDateFromText } from './shared.parser.js';
+import { parseDateFromText, extractCategory } from './shared.parser.js';
 import * as utilities from '../utilities.js';
 
 describe('parseDateFromText', () => {
@@ -8,9 +8,7 @@ describe('parseDateFromText', () => {
             tanggal: 15,
             bulan: 5,
             tahun: 2024,
-            jam: 12,
-            menit: 0,
-            detik: 0
+            jam: 12
         });
     });
 
@@ -59,5 +57,58 @@ describe('parseDateFromText', () => {
         expect(result.bulan).toBe(1); // jan
         // first matching 1-2 digits is "25" (since 2023 is not \b\d{1,2}\b)
         expect(result.tanggal).toBe(25);
+    });
+});
+
+describe('extractCategory', () => {
+    it('matches exact category case-insensitive and returns remainder', () => {
+        const text = 'MAKANAN luar the grace';
+        const knownCategories = ['Makanan', 'Minuman'];
+        const result = extractCategory(text, knownCategories);
+        expect(result).toEqual({
+            category: 'Makanan',
+            remainder: 'luar the grace'
+        });
+    });
+
+    it('matches the longest category when multiple match', () => {
+        const text = 'Makanan Luar warteg';
+        const knownCategories = ['Makanan', 'Makanan Luar'];
+        const result = extractCategory(text, knownCategories);
+        expect(result).toEqual({
+            category: 'Makanan Luar',
+            remainder: 'warteg'
+        });
+    });
+
+    it('returns null when there is no match', () => {
+        const text = 'Transportasi ojol';
+        const knownCategories = ['Makanan', 'Minuman'];
+        const result = extractCategory(text, knownCategories);
+        expect(result).toBeNull();
+    });
+
+    it('returns null for empty text', () => {
+        const text = '';
+        const knownCategories = ['Makanan', 'Minuman'];
+        const result = extractCategory(text, knownCategories);
+        expect(result).toBeNull();
+    });
+
+    it('returns null for empty categories list', () => {
+        const text = 'Makanan luar';
+        const knownCategories: string[] = [];
+        const result = extractCategory(text, knownCategories);
+        expect(result).toBeNull();
+    });
+
+    it('slices remainder correctly even without space', () => {
+        const text = 'MakananLuar';
+        const knownCategories = ['Makanan'];
+        const result = extractCategory(text, knownCategories);
+        expect(result).toEqual({
+            category: 'Makanan',
+            remainder: 'Luar'
+        });
     });
 });
