@@ -9,7 +9,7 @@ import type {
     TransactionDetail 
 } from '../types/index.js';
 import { getMonthlyReport, getYearlyReport } from '../services/index.js';
-import { formatRupiah, getNamaBulan, getJakartaTime } from '../utilities.js';
+import { formatRupiah, getNamaBulan, getJakartaTime, log } from '../utilities.js';
 import { BULAN_MAP } from '../config/index.js';
 
 export class LaporanHandler implements CommandHandler {
@@ -59,7 +59,7 @@ export class LaporanHandler implements CommandHandler {
             });
             return true;
         } catch (error) {
-            console.error(`Error in LaporanHandler: ${error}`);
+            log(`Error in LaporanHandler: ${error}`, 'error');
             return false;
         }
     }
