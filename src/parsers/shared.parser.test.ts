@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { parseAmount, parseDateFromText, extractCategory, extractMetode } from './shared.parser.js';
-import * as utilities from '../utilities.js';
+import * as utilities from '../utils/index.js';
 
 describe('extractMetode', () => {
     it('returns empty string if no payment method is found', () => {

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { getMonthlyReport, addTransaction, getYearlyReport } from './transaction.service.js';
+import { getMonthlyReport, addTransaction, deleteLastTransaction, getYearlyReport } from './transaction.service.js';
 import { getGoogleSheets } from './google-sheets.service.js';
-import { log } from '../utilities.js';
+import { log } from '../utils/index.js';
 import type { TransactionEntry } from '../types/index.js';
 
 // Mock dependencies
@@ -9,8 +9,8 @@ vi.mock('./google-sheets.service.js', () => ({
     getGoogleSheets: vi.fn()
 }));
 
-vi.mock('../utilities.js', async (importOriginal) => {
-    const actual = await importOriginal<typeof import('../utilities.js')>();
+vi.mock('../utils/index.js', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('../utils/index.js')>();
     return {
         ...actual,
         log: vi.fn(),
@@ -142,6 +142,131 @@ describe('Transaction Service', () => {
 
             expect(report.pemasukan).toBe(0);
             expect(report.pengeluaran).toBe(0);
+        });
+    });
+
+    describe('deleteLastTransaction', () => {
+        beforeEach(() => {
+            vi.clearAllMocks();
+        });
+
+        it('returns success false if there are fewer than 2 rows (only headers or empty)', async () => {
+            const mockGet = vi.fn().mockResolvedValue({ data: { values: [['Header 1', 'Header 2']] } });
+            (getGoogleSheets as any).mockResolvedValue({
+                sheets: { spreadsheets: { values: { get: mockGet } } }
+            });
+
+            const result = await deleteLastTransaction();
+
+            expect(result).toEqual({ success: false });
+        });
+
+        it('returns success false if the last row is falsy', async () => {
+            const mockGet = vi.fn().mockResolvedValue({ data: { values: [['Header 1', 'Header 2'], null] } });
+            (getGoogleSheets as any).mockResolvedValue({
+                sheets: { spreadsheets: { values: { get: mockGet } } }
+            });
+
+            const result = await deleteLastTransaction();
+
+            expect(result).toEqual({ success: false });
+        });
+
+        it('returns success false if the sheet ID cannot be found', async () => {
+            const mockRows = [
+                ['Header1'],
+                ['15 Mei 2024', 'Pengeluaran', 'Makanan', '', '', 'Mei', '2024', '50000', '', '', '']
+            ];
+            const mockValuesGet = vi.fn().mockResolvedValue({ data: { values: mockRows } });
+            const mockSpreadsheetsGet = vi.fn().mockResolvedValue({
+                data: {
+                    sheets: [
+                        { properties: { title: 'WrongSheet', sheetId: 123 } }
+                    ]
+                }
+            });
+            (getGoogleSheets as any).mockResolvedValue({
+                sheets: {
+                    spreadsheets: {
+                        values: { get: mockValuesGet },
+                        get: mockSpreadsheetsGet
+                    }
+                }
+            });
+
+            const result = await deleteLastTransaction();
+
+            expect(result).toEqual({ success: false });
+        });
+
+        it('deletes the last row and returns the parsed entry on success', async () => {
+            const mockRows = [
+                ['Tanggal', 'Tipe', 'Kategori', 'Sub Kategori', 'Item', 'Bulan', 'Tahun', 'Jumlah', 'Metode', 'Bukti', 'Keterangan'],
+                ['15 Mei 2024', 'Pengeluaran', 'Makanan', 'Luar', 'Makan siang', 'Mei', '2024', '50000', 'QRIS', '', 'Enak']
+            ];
+            const mockValuesGet = vi.fn().mockResolvedValue({ data: { values: mockRows } });
+            const mockSpreadsheetsGet = vi.fn().mockResolvedValue({
+                data: {
+                    sheets: [
+                        { properties: { title: 'Transaksi', sheetId: 12345 } }
+                    ]
+                }
+            });
+            const mockBatchUpdate = vi.fn().mockResolvedValue({});
+
+            (getGoogleSheets as any).mockResolvedValue({
+                sheets: {
+                    spreadsheets: {
+                        values: { get: mockValuesGet },
+                        get: mockSpreadsheetsGet,
+                        batchUpdate: mockBatchUpdate
+                    }
+                }
+            });
+
+            const result = await deleteLastTransaction();
+
+            expect(result.success).toBe(true);
+            expect(result.entry).toEqual({
+                tanggal: 15,
+                bulan: 5,
+                tahun: 2024,
+                type: 'Pengeluaran',
+                kategori: 'Makanan',
+                subKategori: 'Luar',
+                item: 'Makan siang',
+                jumlah: 50000,
+                metode: 'QRIS',
+                bukti: '',
+                keterangan: 'Enak'
+            });
+
+            expect(mockBatchUpdate).toHaveBeenCalledWith({
+                spreadsheetId: 'mock-sheet-id',
+                requestBody: {
+                    requests: [{
+                        deleteDimension: {
+                            range: {
+                                sheetId: 12345,
+                                dimension: 'ROWS',
+                                startIndex: 1, // lastRowIndex - 1 where lastRowIndex is 2
+                                endIndex: 2
+                            }
+                        }
+                    }]
+                }
+            });
+            expect(log).toHaveBeenCalledWith('✅ Berhasil menghapus entri terakhir', 'success');
+        });
+
+        it('catches and logs errors when the Google Sheets API fails', async () => {
+            const errorMessage = 'Google Sheets API error on get';
+            (getGoogleSheets as any).mockRejectedValue(new Error(errorMessage));
+
+            const result = await deleteLastTransaction();
+
+            expect(result).toEqual({ success: false });
+            expect(log).toHaveBeenCalledWith(`❌ Gagal menghapus transaksi: ${errorMessage}`, 'error');
         });
     });
 
