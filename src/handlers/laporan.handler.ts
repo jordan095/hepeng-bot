@@ -12,6 +12,8 @@ import { getMonthlyReport, getYearlyReport } from '../services/index.js';
 import { formatRupiah, getNamaBulan, getJakartaTime } from '../utilities.js';
 import { BULAN_MAP } from '../config/index.js';
 
+const BULAN_KEYS = Object.keys(BULAN_MAP);
+
 export class LaporanHandler implements CommandHandler {
     canHandle(text: string): boolean {
         return text.toLowerCase().trim().startsWith('laporan');
@@ -46,7 +48,7 @@ export class LaporanHandler implements CommandHandler {
             let tahun = jkt.tahun;
 
             if (rest) {
-                const mName = Object.keys(BULAN_MAP).find(name => rest.includes(name));
+                const mName = BULAN_KEYS.find(name => rest.includes(name));
                 if (mName) bulan = BULAN_MAP[mName] ?? bulan;
 
                 const yrMatch = /(\d{4})/.exec(rest);
