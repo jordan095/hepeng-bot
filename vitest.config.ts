@@ -10,7 +10,7 @@ export default defineConfig({
             provider: 'v8',
             reporter: ['text', 'lcov'],
             include: ['src/parsers/**', 'src/utilities.ts', 'src/services/transaction.service.ts'],
-            exclude: ['src/index.ts', 'src/handlers/**', 'src/config/**']
+            exclude: ['src/index.ts', 'src/services/google-sheets.service.ts', 'src/services/index.ts', 'src/handlers/**', 'src/config/**']
         }
     }
 });
