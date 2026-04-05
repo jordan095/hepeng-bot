@@ -9,8 +9,8 @@ export default defineConfig({
         coverage: {
             provider: 'v8',
             reporter: ['text', 'lcov'],
-            include: ['src/parsers/**', 'src/utilities.ts'],
-            exclude: ['src/index.ts', 'src/services/**', 'src/handlers/**', 'src/config/**']
+            include: ['src/parsers/**', 'src/utilities.ts', 'src/services/transaction.service.ts'],
+            exclude: ['src/index.ts', 'src/handlers/**', 'src/config/**']
         }
     }
 });
