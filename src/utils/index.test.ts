@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { sanitizeSheetCell, formatRupiah } from './utilities.js';
+import { sanitizeSheetCell, formatRupiah } from './index.js';
 
 describe('sanitizeSheetCell', () => {
     it('should prepend single quote to strings starting with =', () => {
