@@ -2,7 +2,7 @@
 
 import type { TransactionEntry, ParsedTransaction, TransactionType } from '../types/index.js';
 import { parseIncome } from '../parsers/index.js';
-import { formatRupiah, getNamaBulan } from '../utilities.js';
+import { formatRupiah, getNamaBulan } from '../utils/index.js';
 import { BaseTransactionHandler } from './base-transaction.handler.js';
 
 export class IncomeHandler extends BaseTransactionHandler {

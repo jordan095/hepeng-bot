@@ -15,7 +15,7 @@ import qrcode from 'qrcode-terminal';
 
 import { CONFIG } from './config/index.js';
 import type { MessageContext } from './types/index.js';
-import { log, getJakartaTime } from './utilities.js';
+import { log, getJakartaTime } from './utils/index.js';
 import { routeMessage } from './handlers/index.js';
 
 const MAX_RECONNECT = 5;

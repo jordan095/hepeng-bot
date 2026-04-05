@@ -6,7 +6,7 @@
 import { KATEGORI_PENGELUARAN, ALL_KATEGORI_PENGELUARAN } from '../config/index.js';
 import type { ParsedTransaction } from '../types/index.js';
 import { parseAmount, parseDateFromText, extractMetode, extractCategory, extractSubCategory } from './shared.parser.js';
-import { getJakartaTime } from '../utilities.js';
+import { getJakartaTime } from '../utils/index.js';
 
 export function parseExpense(rawText: string): ParsedTransaction | null {
     const text = rawText.trim();
