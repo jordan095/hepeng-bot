@@ -74,3 +74,15 @@ export function formatShort(angka: number): string {
     if (angka >= 1_000) return `${(angka / 1_000).toFixed(angka % 1_000 === 0 ? 0 : 1)}rb`;
     return String(angka);
 }
+
+/**
+ * Prevents Google Sheets formula injection.
+ * If a string starts with '=', '+', '-', or '@', it prepends a single quote.
+ */
+export function sanitizeSheetCell(value: string | number): string {
+    const str = String(value);
+    if (/^[=+\-@]/.test(str)) {
+        return `'${str}`;
+    }
+    return str;
+}
