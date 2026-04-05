@@ -32,7 +32,7 @@ function getUserRole(sender: string): 'Owner' | 'Viewer' {
 // ─── Message Processing ───────────────────────────────────────────────────
 
 async function processMessage(sock: WASocket, msg: proto.IWebMessageInfo): Promise<void> {
-    const from = msg.key.remoteJid;
+    const from = msg.key?.remoteJid;
     if (!from) return;
 
     const messageContent = extractMessageContent(msg.message || {}) || {};
@@ -71,9 +71,9 @@ function extractText(messageContent: proto.IMessage, messageType: string | undef
 
 function getSender(msg: proto.IWebMessageInfo): string {
     const candidates = [
-        msg.key.participant,
+        msg.key?.participant,
         (msg as { senderPn?: string }).senderPn,
-        msg.key.remoteJid
+        msg.key?.remoteJid
     ].filter((jid): jid is string => Boolean(jid));
 
     for (const jid of candidates) {
@@ -82,7 +82,7 @@ function getSender(msg: proto.IWebMessageInfo): string {
             return clean;
         }
     }
-    return msg.key.remoteJid?.split('@')[0] || 'unknown';
+    return msg.key?.remoteJid?.split('@')[0] || 'unknown';
 }
 
 // ─── Deduplication ───────────────────────────────────────────────────────
@@ -101,8 +101,8 @@ function isDuplicate(msgId: string | null | undefined): boolean {
 
 function handleMessagesUpsert(sock: WASocket, messages: proto.IWebMessageInfo[]): void {
     const msg = messages?.[0];
-    if (!msg?.message || msg.key.fromMe) return;
-    if (isDuplicate(msg.key.id)) return;
+    if (!msg?.message || msg.key?.fromMe) return;
+    if (isDuplicate(msg.key?.id)) return;
 
     processMessage(sock, msg).catch(err => {
         log(`Error processing message: ${err}`, 'error');
