@@ -1,7 +1,7 @@
 // src/parsers/shared.parser.ts - Shared parsing utilities
 
 import { BULAN_MAP, METODE_KEYWORDS } from '../config/index.js';
-import { getJakartaTime } from '../utilities.js';
+import { getJakartaTime } from '../utils/index.js';
 
 export interface AmountResult {
     amount: number;

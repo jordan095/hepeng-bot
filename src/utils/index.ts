@@ -2,7 +2,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { NAMA_BULAN } from './config/index.js';
+import { NAMA_BULAN } from '../config/index.js';
 
 export interface JakartaTime {
     tanggal: number;

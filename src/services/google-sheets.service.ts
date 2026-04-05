@@ -1,7 +1,7 @@
 // src/services/google-sheets.service.ts - Google Sheets connection (reused from ipl-bot)
 
 import { google } from 'googleapis';
-import { log } from '../utilities.js';
+import { log } from '../utils/index.js';
 
 let sheetsInstance: ReturnType<typeof google.sheets> | null = null;
 

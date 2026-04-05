@@ -3,7 +3,7 @@
 import type { MessageContext, CommandHandler, TransactionEntry } from '../types/index.js';
 import { parseIncome } from '../parsers/index.js';
 import { addTransaction } from '../services/index.js';
-import { formatRupiah, getNamaBulan } from '../utilities.js';
+import { formatRupiah, getNamaBulan } from '../utils/index.js';
 import { setLastEntry } from './undo.handler.js';
 
 export class IncomeHandler implements CommandHandler {

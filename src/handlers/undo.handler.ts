@@ -2,7 +2,7 @@
 
 import type { MessageContext, CommandHandler, TransactionEntry } from '../types/index.js';
 import { deleteLastTransaction } from '../services/index.js';
-import { formatRupiah, getNamaBulan } from '../utilities.js';
+import { formatRupiah, getNamaBulan } from '../utils/index.js';
 
 // In-memory store for last entry (for display in undo confirmation)
 let lastEntry: TransactionEntry | null = null;

@@ -2,7 +2,7 @@
 
 import { CONFIG } from '../config/index.js';
 import { getGoogleSheets } from './google-sheets.service.js';
-import { getNamaBulan, log } from '../utilities.js';
+import { getNamaBulan, log } from '../utils/index.js';
 import type { TransactionEntry, MonthlyReport, YearlyReport, TransactionDetail } from '../types/index.js';
 
 const SHEET_RANGE = 'Transaksi';
