@@ -34,10 +34,10 @@ GOOGLE_CREDENTIALS={"type":"service_account",...}
 ### 4. Menjalankan Bot
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Jalankan mode development
-npm run dev
+pnpm run dev
 ```
 Scan QR code yang muncul di terminal menggunakan WhatsApp Anda (Linked Devices).
 
@@ -72,8 +72,12 @@ Contoh:
 
 ## 🧪 Testing
 ```bash
-npm run test
+pnpm run test
 ```
+
+## 🌿 Strategi Branching
+- `main-dev` - Branch utama untuk pengembangan. Semua fitur baru dan perbaikan bug harus di-merge ke sini terlebih dahulu.
+- `main` - Branch untuk produksi/deployment. Lakukan merge dari `main-dev` ke `main` ketika siap untuk deploy ke lingkungan produksi.
 
 ## 📄 Lisensi
 MIT

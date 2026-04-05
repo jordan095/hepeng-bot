@@ -54,9 +54,9 @@ The bot expects a sheet named **"Transaksi"** with the following columns:
 
 ## Development & Testing
 
-- **Run Dev:** `npm run dev`
-- **Run Tests:** `npm run test`
-- **Coverage:** `npm run test:coverage`
+- **Run Dev:** `pnpm run dev`
+- **Run Tests:** `pnpm run test`
+- **Coverage:** `pnpm run test:coverage`
 
 ### Extending the Bot
 To add a new command:
