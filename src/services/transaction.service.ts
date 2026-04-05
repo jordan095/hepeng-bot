@@ -217,14 +217,14 @@ function parseBulanFromText(text: string): number {
 /**
  * Checks if a row matches the specified month and year.
  */
-function isRowMatch(row: any[] | undefined, bulan: number, tahun: number): row is any[] {
+function isRowMatch(row: (string | undefined)[] | undefined, bulan: number, tahun: number): row is (string | undefined)[] {
     if (!row) return false;
     const rowTahun = Number.parseInt(row[6] || '0', 10);
     const rowBulan = parseBulanFromText(row[5] || '');
     return rowTahun === tahun && rowBulan === bulan;
 }
 
-function processRowsForReport(rows: any[][], bulan: number, tahun: number) {
+function processRowsForReport(rows: (string | undefined)[][], bulan: number, tahun: number) {
     let pemasukan = 0;
     let pengeluaran = 0;
     const pemasukanDetails: TransactionDetail[] = [];
