@@ -1,67 +1,29 @@
 // src/handlers/income.handler.ts - Handle income commands
 
-import type { MessageContext, CommandHandler, TransactionEntry } from '../types/index.js';
+import type { TransactionEntry, ParsedTransaction, TransactionType } from '../types/index.js';
 import { parseIncome } from '../parsers/index.js';
-import { addTransaction } from '../services/index.js';
 import { formatRupiah, getNamaBulan } from '../utilities.js';
-import { setLastEntry } from './undo.handler.js';
+import { BaseTransactionHandler } from './base-transaction.handler.js';
 
-export class IncomeHandler implements CommandHandler {
+export class IncomeHandler extends BaseTransactionHandler {
     canHandle(text: string): boolean {
         const lower = text.toLowerCase().trim();
         return lower.startsWith('+') || lower.includes('masuk') || lower.includes('pemasukan');
     }
 
-    async handle(context: MessageContext): Promise<boolean> {
-        try {
-            if (context.userRole !== 'Owner') {
-                await context.sock.sendMessage(context.from, {
-                    text: '⛔ Hanya owner yang bisa mencatat transaksi.'
-                });
-                return true;
-            }
-
-            const parsed = parseIncome(context.text);
-            if (!parsed) {
-                await context.sock.sendMessage(context.from, {
-                    text: this.getFormatHint()
-                });
-                return true;
-            }
-
-            const entry: TransactionEntry = {
-                tanggal: parsed.tanggal,
-                bulan: parsed.bulan,
-                tahun: parsed.tahun,
-                type: 'Pemasukan',
-                kategori: parsed.kategori,
-                subKategori: parsed.subKategori,
-                item: parsed.item,
-                jumlah: parsed.jumlah,
-                metode: parsed.metode
-            };
-
-            const success = await addTransaction(entry);
-
-            if (success) {
-                setLastEntry(entry);
-                await context.sock.sendMessage(context.from, {
-                    text: this.buildSuccessMessage(entry)
-                });
-            } else {
-                await context.sock.sendMessage(context.from, {
-                    text: '❌ Gagal menyimpan pemasukan. Coba lagi.'
-                });
-            }
-
-            return true;
-        } catch (error) {
-            console.error(`Error in IncomeHandler: ${error}`);
-            return false;
-        }
+    protected parseMessage(text: string): ParsedTransaction | null {
+        return parseIncome(text);
     }
 
-    private buildSuccessMessage(entry: TransactionEntry): string {
+    protected getTransactionType(): TransactionType {
+        return 'Pemasukan';
+    }
+
+    protected getTransactionName(): string {
+        return 'pemasukan';
+    }
+
+    protected buildSuccessMessage(entry: TransactionEntry): string {
         const methodeText = entry.metode ? `\n5. Metode: ${entry.metode}` : '';
         const itemText = entry.item ? `\n4. Item: ${entry.item}` : '';
         return `✅ *Pemasukan tercatat!*
@@ -75,7 +37,7 @@ export class IncomeHandler implements CommandHandler {
 ✔️ Tersimpan di Google Sheet`;
     }
 
-    private getFormatHint(): string {
+    protected getFormatHint(): string {
         return `⚠️ Format tidak dikenali.
 
 📝 *Format pemasukan:*
