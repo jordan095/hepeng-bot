@@ -45,7 +45,7 @@ The project is structured into modular layers located in the `src/` directory:
 
 ## 🧪 Testing
 
-*   **Framework:** Vitest (`npm run test`, `npm run test:coverage`).
+*   **Framework:** Vitest (`pnpm run test`, `pnpm run test:coverage`).
 *   **Guidelines:**
     *   Add tests primarily for `parsers/` since they contain the most complex business logic (regular expressions, date string manipulation).
     *   Tests should live alongside the code, e.g., `expense.parser.test.ts`.
@@ -60,6 +60,6 @@ Ensure you have a `.env` file (or provide these variables) with the following mi
 
 ## 🚀 Running the Project
 
-*   **Development:** `npm run dev` (Runs with `tsx watch`)
-*   **Production:** `npm start` (Runs with `tsx`)
+*   **Development:** `pnpm run dev` (Runs with `tsx watch`)
+*   **Production:** `pnpm start` (Runs with `tsx`)
 *   **QR Code Login:** On the first run, `qrcode-terminal` will display a QR code in the terminal. Scan it with your WhatsApp linked devices to connect the bot.
